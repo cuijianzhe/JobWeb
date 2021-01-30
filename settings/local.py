@@ -8,7 +8,7 @@
 from .base import *
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 ## 务必修改以下值，确保运行时系统安全:
 SECRET_KEY = "8t!nm@z7wk5*z!tpb^#lj+9bk*vi^0ja8vq*3al)w==2qy=d(f"
@@ -25,4 +25,4 @@ INSTALLED_APPS += (
 
 
 ## 钉钉群的 WEB_HOOK， 用于发送钉钉消息
-# DINGTALK_WEB_HOOK = "https://oapi.dingtalk.com/robot/send?access_token=xxxxx"
+DINGTALK_WEB_HOOK = "https://oapi.dingtalk.com/robot/send?access_token=b905ca4350378328948b4a3eaa7dd0a91f442ef05ee9545c600268a4c690b374"

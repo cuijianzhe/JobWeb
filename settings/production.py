@@ -1,9 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# @File  : production.py
-# @Author: cuijianzhe
-# @Date  : 2021/1/8
-# @Desc  :
+
 import os
 from .base import *
 
@@ -36,8 +31,8 @@ CELERYD_MAX_TASKS_PER_CHILD = 10
 CELERYD_LOG_FILE = os.path.join(BASE_DIR, "logs", "celery_work.log")
 CELERYBEAT_LOG_FILE = os.path.join(BASE_DIR, "logs", "celery_beat.log")
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
 
 '''
 sentry_sdk.init(
@@ -77,7 +72,7 @@ OSS_BUCKET_NAME = 'djangorecruit'
 # Refer https://www.alibabacloud.com/help/zh/doc-detail/31837.htm for OSS Region & Endpoint
 OSS_ENDPOINT = 'oss-cn-beijing.aliyuncs.com'
 
-DINGTALK_WEB_HOOK_TOKEN = os.environ.get('DINGTALK_WEB_HOOK_TOKEN', '')
+DINGTALK_WEB_HOOK_TOKEN = os.environ.get('b905ca4350378328948b4a3eaa7dd0a91f442ef05ee9545c600268a4c690b374', '')
 DINGTALK_WEB_HOOK = "https://oapi.dingtalk.com/robot/send?access_token=%s" % DINGTALK_WEB_HOOK_TOKEN
-
+# https://oapi.dingtalk.com/robot/send?access_token=b905ca4350378328948b4a3eaa7dd0a91f442ef05ee9545c600268a4c690b374
 ##########################

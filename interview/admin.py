@@ -1,11 +1,20 @@
 from django.contrib import admin
 from django.http import HttpResponse
-from interview.models import Candidate
-from interview.candidate_field import default_fieldsets,default_fieldsets_first,default_fieldsets_second
-from datetime import datetime
 from django.db.models import Q
+# from django.contrib import messages
+# from django.utils.safestring import mark_safe
+#
+# from jobs.models import Resume
+# from interview import candidate_field as cf
+# from .tasks import send_dingtalk_message
+# from .dingtalk import send
+
 import logging
 import csv
+from datetime import datetime
+
+from interview.models import Candidate
+from interview import dingtalk
 
 # Register your models here.
 
@@ -13,6 +22,23 @@ logger = logging.getLogger(__name__)
 
 exportable_fields = ('username','city','phone','bachelor_school','master_school','degree','first_result',
                      'first_interviewer_user','second_result','second_interviewer_user','hr_result','hr_score','hr_remark','hr_interviewer_user')
+
+
+# 通知一面面试官面试
+def notify_interviewer(modeladmin, request, queryset):
+    candidates = ""
+    interviewers = ""
+    for obj in queryset:
+        candidates = obj.username + ";" + candidates
+        interviewers = obj.first_interviewer_user.username + ";" + interviewers
+    # 这里的消息发送到钉钉， 或者通过 Celery 异步发送到钉钉
+    #send ("候选人 %s 进入面试环节，亲爱的面试官，请准备好面试： %s" % (candidates, interviewers) )
+    dingtalk.send("候选人 %s 进入面试环节，亲爱的面试官，请准备好面试： %s" % (candidates, interviewers) )
+    # messages.add_message(request, messages.INFO, '已经成功发送面试通知')
+
+
+notify_interviewer.short_description = u'通知一面面试官'
+
 def export_model_as_csv(modeladmin, request,queryset):
     response = HttpResponse(content_type='text/csv')
     field_list = exportable_fields
@@ -42,9 +68,17 @@ export_model_as_csv.short_description = u'导出为CSV文件'
 
 # export_model_as_csv.allowed_permissions = ('export',)
 
+
+#候选人管理类
 class CandidateAdmin(admin.ModelAdmin):
     exclude = ('creator','created_date','modified_date')
-    actions = [export_model_as_csv,]  #注册导出表函数
+    actions = (export_model_as_csv,notify_interviewer,) #注册导出表函数
+
+    ##当前用户是否有导出权限
+    def has_export_permissions(self,request):
+        opts = self.opts
+        return request.user.has_perm('%s.%s'%(opts.app_label,"export"))
+
     list_display = (
         "username","city","bachelor_school","first_score","first_result","first_interviewer_user",
         "second_score","second_interviewer_user","hr_score","hr_result","last_editor"
