@@ -1,0 +1,16 @@
+{% extends 'base.html' %}   {#继承base页面#}
+
+{#content会把base里面定义的内容替换掉#}
+{% block content %}
+
+{% if job_list %}
+    <ul>
+    {% for job in job_list %}
+        <li>{{job.type_name}}  <a href="/job/{{ job.id }}/" style="color:blue">{{ job.job_name }}</a>   {{job.city_name}}  </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No jobs are available.</p>
+{% endif %}
+
+{% endblock %}
