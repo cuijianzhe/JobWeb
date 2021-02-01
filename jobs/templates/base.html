@@ -1,7 +1,29 @@
 <!--base.html -->
 
-<h1 style="margin: auto;width: 50%;"> 哲科技</h1>
+<h1 style="margin: auto;width: 50%"> 哲科技</h1>
 
 <p></p>
-{%  block content %}
+
+
+
+{%  block header %}
+
+<a href="/" style="text-decoration: none;color: #007bff">首页</a>
+<a href="/joblist" style="text-decoration: none;color: #007bff">职位列表</a>
+{% if user.is_authenticated %}
+    <a href="/accounts/logout" style="text-decoration: #007bff">退出</a>
+{% else %}
+    <a href="/accounts/login" style="text-decoration: #007bff">登录</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <p> 终于等到你 {{ user.username }},期待加入我们，用技术去探索世界</p>
+{% else %}
+    <p>欢迎你，期待加入我们，登录后可以提交简历.</p>
+{% endif %}
+{% endblock %}
+
+<hr>
+
+{% block content %}
 {% endblock %}

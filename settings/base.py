@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'grappelli',  #django后台
+    'registration',  #集成第三方注册功能包
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

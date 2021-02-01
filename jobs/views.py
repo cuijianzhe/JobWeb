@@ -11,16 +11,12 @@ from jobs.models import cities,JobTypes
 
 def joblist(request):
     job_list = Job.objects.order_by('job_type') #django的models的内置方法
-    template = loader.get_template('joblist.html')  #使用加载器加载joblist到静态页面
-
     context = {'job_list':job_list}
 
     for job in job_list:
         job.city_name = cities[job.job_city][1]
         job.job_type = JobTypes[job.job_type][1]
-
-    return HttpResponse(template.render(context)) #模板方法把上下文展现给
-
+    return render(request,'joblist.html',context)
 def detail(request,job_id): #jobid 通过变量传进来
     try:
         job = Job.objects.get(pk=job_id)
