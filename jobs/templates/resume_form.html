@@ -1,0 +1,7 @@
+<h2> 提交简历 </h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="提交">
+</form>
