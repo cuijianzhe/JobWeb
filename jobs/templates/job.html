@@ -4,8 +4,7 @@
 {#定义content内容块，会覆盖父页面的content块#}
 {% block content %}
 
-<div style="margin:auto; width:50%;">
-    <a href="/joblist" style="color: blue"> 返回职位列表 </a><p></p>
+
 {% if job %}
     <div class="position_name" z>
         <h2>岗位名称：{{job.job_name}} </h2>
@@ -28,6 +27,7 @@
     </div>
 
     <div class="apply_position">
+    <button type="submit" class="btn btn-primary">
         <input type="button" class="btn btn-primary" style="width:120px;" value="申请" onclick="location.href='/resume/add/?apply_position={{job.job_name}}&city={{job.city_name}}'"/>
     </div>
 {% else %}
