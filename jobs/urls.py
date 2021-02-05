@@ -15,5 +15,6 @@ urlpatterns = [
     #职位详情
     url(r"^job/(?P<job_id>\d+)/$",views.detail,name='detail'),
     #提交简历
-    path('resume/add/',views.ResumeCreateView.as_view(),name='resume-add')
+    path('resume/add/',views.ResumeCreateView.as_view(),name='resume-add'),
+    path('resume/<int:pk>/',views.ResumDetailView.as_view(),name='resume_detail'),  #<int:pk> 表示它的主键
 ]

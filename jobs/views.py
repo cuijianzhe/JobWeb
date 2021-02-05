@@ -10,6 +10,8 @@ from jobs.models import Job,Resume
 from jobs.models import cities,JobTypes
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
+from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def joblist(request):
     job_list = Job.objects.order_by('job_type') #django的models的内置方法
@@ -19,6 +21,7 @@ def joblist(request):
         job.city_name = cities[job.job_city][1]
         job.job_type = JobTypes[job.job_type][1]
     return render(request,'joblist.html',context)
+
 def detail(request,job_id): #jobid 通过变量传进来
     try:
         job = Job.objects.get(pk=job_id)
@@ -30,7 +33,20 @@ def detail(request,job_id): #jobid 通过变量传进来
     return render(request,"job.html",{'job':job})
 
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+def detail_resume(request, resume_id):
+    try:
+        resume = Resume.objects.get(pk=resume_id)
+        content = "name: %s <br>  introduction: %s <br>" % (resume.username, resume.candidate_introduction)
+        return HttpResponse(content)
+    except Resume.DoesNotExist:
+        raise Http404("resume does not exist")
+
+class ResumDetailView(DetailView):
+    '''简历详情页'''
+    model = Resume
+    template_name = 'resume_detail.html'
+
+
 
 class ResumeCreateView(LoginRequiredMixin,CreateView):
     '''简历职位页面'''
